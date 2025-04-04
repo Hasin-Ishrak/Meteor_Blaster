@@ -25,7 +25,7 @@ public class bomb {
        this.angle=angle;
        this.size=size;
        this.speed=speed;
-       shape =new Ellipse2D.Double(0,0,size,size);
+       shape =new Ellipse2D.Double(0,0,size*1.5,size);
     }
     public void update(){
         x+=Math.cos(Math.toRadians(angle))*speed;

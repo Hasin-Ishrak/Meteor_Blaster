@@ -1,6 +1,5 @@
 package components;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -128,10 +127,10 @@ public class panel extends JComponent {
                     if(key.isKey_j() || key.isKey_k()){
                         if(shotm==0){
                             if(key.isKey_j()){
-                                bombs.add(0,new bomb(player.getx(),player.gety(),player.getangle(),8,4f));
+                                bombs.add(0,new bomb(player.getx(),player.gety(),player.getangle(),8,3f));
                             }
                             else{
-                                bombs.add(0,new bomb(player.getx(),player.gety(),player.getangle(),14,5f));
+                                bombs.add(0,new bomb(player.getx(),player.gety(),player.getangle(),14,4f));
                             }
                         }
                         shotm++;
