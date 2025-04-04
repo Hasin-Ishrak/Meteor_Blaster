@@ -133,8 +133,8 @@ public class panel extends JComponent {
                             else{
                                 bombs.add(0,new bomb(player.getx(),player.gety(),player.getangle(),14,5f));
                             }
-                            shotm++;
                         }
+                        shotm++;
                         if(shotm==15){
                             shotm=0;
                         }
