@@ -14,10 +14,13 @@ public class player {
        this.imagespeed=new ImageIcon(getClass().getResource("/image/plane_speed.png")).getImage();
     }
 
-    public static final double playersz=70;
+    public static final double playersz=64;
     private double x;
     private double y;
+    private final float mxsp= 1f;
+    private float speed= 0f;
     private float angle = 0f;
+    private boolean speedup;
     private final Image image;
     private final Image imagespeed;
 
@@ -25,7 +28,10 @@ public class player {
         this.x=x;
         this.y=y;
     }
-
+    public void update(){
+        x+=Math.cos(Math.toRadians(angle))*speed;
+        y+=Math.sin(Math.toRadians(angle))*speed;
+    }
     public void changeangle(float angle){
         if(angle<0){
             angle=359;
@@ -39,8 +45,8 @@ public class player {
        AffineTransform oldTransform=g2.getTransform();
        g2.translate(x, y);
        AffineTransform tr=new AffineTransform();
-       tr.rotate(Math.toRadians(angle),playersz/2,playersz/2);
-       g2.drawImage(image,tr,null);
+       tr.rotate(Math.toRadians(angle+45),playersz/2,playersz/2);
+       g2.drawImage(speedup ? imagespeed:image,tr,null);
 
        g2.setTransform(oldTransform);
     }
@@ -53,5 +59,22 @@ public class player {
     public float getangle(){
         return angle;
     }
-
+    public void speedUp(){
+       speedup=true;
+       if(speed>mxsp){
+        speed=mxsp;
+       }
+       else{
+        speed+=0.01f;
+       }
+    }
+    public void speedDown(){
+      speedup=false;
+      if(speed<=0){
+        speed=0;
+      }
+      else{
+        speed-=0.003f;
+      }
+    }
 }

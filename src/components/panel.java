@@ -3,12 +3,16 @@ package components;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.List;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
+import javax.swing.ImageIcon;
+import java.io.File;
+import java.io.IOException;
 
 import objects.player;
 
@@ -21,12 +25,14 @@ public class panel extends JComponent {
     private Thread thread;
     private boolean start =true;
     private keyboard key;
+    private ImageIcon gifImage; 
+    private int shotm;
     
     private final int Fps =60;
     private final int Time =1000000000/Fps;
 
     private player player;
-
+    private List<bomb>bombs;
 
     public void start(){
         height=getHeight();
@@ -36,6 +42,8 @@ public class panel extends JComponent {
         g2 =image.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+        gifImage = new ImageIcon(getClass().getResource("/image/space.gif"));
 
         thread=new Thread (new Runnable() {
 
@@ -106,12 +114,20 @@ public class panel extends JComponent {
                 float s=1f;
                 while (start) {
                     float angle =player.getangle();
+                
                     if(key.isKey_right()){
                         angle+=s;
                     }
                     if(key.isKey_left()){
                         angle-=s;
                     }
+                    if(key.isKey_space()){
+                        player.speedUp();
+                    }
+                    else{
+                        player.speedDown();
+                    }
+                    player.update();
                     player.changeangle(angle);
                     sleep(5);
                 }
@@ -120,22 +136,17 @@ public class panel extends JComponent {
 
     }
 
-    private void drawbackground(){
-      
-        g2.setColor(new Color(30,30,30));
-        g2.fillRect(0, 0, width, height);
-        // drawStars();
-    }
-    // private void drawStars() {
-    //     g2.setColor(Color.WHITE); 
-    //     for (int i = 0; i < 20; i++) {
+    private void drawbackground() {
+        if (gifImage != null) {
+            g2.drawImage(gifImage.getImage(), 0, 0, width, height, null); 
+        } else {
             
-    //         int x = (int) (Math.random() * width);
-    //         int y = (int) (Math.random() * height);
-    //         int size = (int) (Math.random() * 3) + 1; 
-    //         g2.fillOval(x, y, size, size); 
-    //     }
-    // }
+            g2.setColor(new Color(30, 30, 30));
+            g2.fillRect(0, 0, width, height);
+        }
+    }
+    
+   
 
     private void drawgame(){
       player.draw(g2);
