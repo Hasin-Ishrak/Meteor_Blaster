@@ -12,7 +12,7 @@ public class bomb {
     private double x;
     private double y;
     private final Shape shape;
-    private final Color color = new Color(220, 102, 27);
+    private final Color color = new Color(255, 255, 0);
     private final float angle;
     private double size;
     private float speed = 1f;

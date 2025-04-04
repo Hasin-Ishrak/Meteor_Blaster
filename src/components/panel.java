@@ -1,9 +1,9 @@
 package components;
 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.List;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,8 +13,11 @@ import javax.swing.JComponent;
 import javax.swing.ImageIcon;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import objects.player;
+import objects.bomb;
 
 public class panel extends JComponent {
 
@@ -64,6 +67,7 @@ public class panel extends JComponent {
         });
         initobj();
         initkey();
+        initbombs();
         thread.start();
     }
 
@@ -121,6 +125,23 @@ public class panel extends JComponent {
                     if(key.isKey_left()){
                         angle-=s;
                     }
+                    if(key.isKey_j() || key.isKey_k()){
+                        if(shotm==0){
+                            if(key.isKey_j()){
+                                bombs.add(0,new bomb(player.getx(),player.gety(),player.getangle(),8,4f));
+                            }
+                            else{
+                                bombs.add(0,new bomb(player.getx(),player.gety(),player.getangle(),14,5f));
+                            }
+                            shotm++;
+                        }
+                        if(shotm==15){
+                            shotm=0;
+                        }
+                    }
+                    else{
+                        shotm=0;
+                    }
                     if(key.isKey_space()){
                         player.speedUp();
                     }
@@ -134,6 +155,26 @@ public class panel extends JComponent {
             }
         }).start();
 
+    }
+    private void initbombs(){
+        bombs = new ArrayList<>();
+        new Thread(new Runnable() {
+           public void run(){
+            while(start){
+               for(int i=0;i<bombs.size();i++){
+                  bomb bomb =bombs.get(i);
+                  if (bomb != null) {
+                    bomb.update();
+                    if (!bomb.check(width, height)) {
+                        bombs.remove(bomb);  
+                    }
+                }
+                  }
+               
+               sleep(1);
+            }
+           } 
+        }).start();;
     }
 
     private void drawbackground() {
@@ -150,6 +191,12 @@ public class panel extends JComponent {
 
     private void drawgame(){
       player.draw(g2);
+      for(int i=0;i<bombs.size();i++){
+         bomb bomb =bombs.get(i);
+         if(bomb!=null){
+            bomb.draw(g2);
+         }
+      }
     }
 
     private void render(){
