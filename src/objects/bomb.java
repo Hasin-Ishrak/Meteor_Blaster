@@ -44,6 +44,9 @@ public class bomb {
         g2.fill(shape);
         g2.setTransform(oldTransform);
     }
+    public Shape getshape(){
+       return new Area(new Ellipse2D.Double(x, y, size, size));
+    }
     public double getx(){
         return x;
     }

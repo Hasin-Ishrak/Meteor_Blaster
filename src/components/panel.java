@@ -7,6 +7,7 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.ImageIcon;
@@ -14,9 +15,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import objects.player;
 import objects.bomb;
+import objects.meteor;
 
 public class panel extends JComponent {
 
@@ -35,6 +38,7 @@ public class panel extends JComponent {
 
     private player player;
     private List<bomb>bombs;
+    private List<meteor>meteors;
 
     public void start(){
         height=getHeight();
@@ -70,9 +74,31 @@ public class panel extends JComponent {
         thread.start();
     }
 
+    private void addmt(){
+        Random ran=new Random();
+        int lcy=ran.nextInt(height-50)+25;
+        meteor meteor =new meteor();
+        meteor.changelocation(0,lcy);
+        meteor.changeangle(0);
+        meteors.add(meteor);
+        int lcy2=ran.nextInt(height-50)+25;
+        meteor meteor2=new meteor();
+        meteor2.changelocation(width, lcy2);
+        meteor2.changeangle(180);
+        meteors.add(meteor2);
+    }
     private void initobj(){
        player =new player();
        player.changelocation(150, 150);
+       meteors=new ArrayList<>();
+       new Thread(new Runnable() {
+         public void run(){
+            while (start) {
+                addmt();
+                sleep(3000);
+            }
+         }
+       }).start();
     }
 
     private void initkey(){
@@ -149,6 +175,15 @@ public class panel extends JComponent {
                     }
                     player.update();
                     player.changeangle(angle);
+                    for(int i=0;i<meteors.size();i++){
+                        meteor meteor=meteors.get(i);
+                        if(meteor!=null){
+                            meteor.update();
+                            if(!meteor.check(width, height)){
+                                meteors.remove(meteor);
+                            }
+                        }
+                    }
                     sleep(5);
                 }
             }
@@ -164,6 +199,7 @@ public class panel extends JComponent {
                   bomb bomb =bombs.get(i);
                   if (bomb != null) {
                     bomb.update();
+                    checkbombs(bomb);
                     if (!bomb.check(width, height)) {
                         bombs.remove(bomb);  
                     }
@@ -176,6 +212,19 @@ public class panel extends JComponent {
         }).start();;
     }
 
+    private void checkbombs(bomb bomb){
+        for(int i=0;i<meteors.size();i++){
+            meteor meteor =meteors.get(i);
+            if(meteor!=null){
+               Area area=new Area(bomb.getshape());
+               area.intersect(meteor.getshape());
+               if(!area.isEmpty()){
+                meteors.remove(meteor);
+                bombs.remove(bomb);
+               }
+            }
+        }
+    }
     private void drawbackground() {
         if (gifImage != null) {
             g2.drawImage(gifImage.getImage(), 0, 0, width, height, null); 
@@ -196,6 +245,12 @@ public class panel extends JComponent {
             bomb.draw(g2);
          }
       }
+      for(int i=0;i<meteors.size();i++){
+        meteor meteor=meteors.get(i);
+        if(meteor!=null){
+            meteor.draw(g2);
+        }
+     }
     }
 
     private void render(){
