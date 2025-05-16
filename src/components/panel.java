@@ -29,6 +29,8 @@ public class panel extends JComponent {
     private int height,width;
     private Thread thread;
     private boolean start =true;
+    private boolean gameStarted = false;
+
     private keyboard key;
     private ImageIcon gifImage; 
     private int shotm;
@@ -57,7 +59,11 @@ public class panel extends JComponent {
              while (start) {
                 long starttime=System.nanoTime();
                 drawbackground();
-                drawgame();
+                if (!gameStarted) {
+                    drawStartScreen(); // ⬅️ draw "Press S" screen
+                } else {
+                    drawgame(); // ⬅️ only after S is pressed
+                }
                 render();
                 long time=System.nanoTime()-starttime;
                 if(time<Time){
@@ -119,6 +125,12 @@ public class panel extends JComponent {
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     key.setKey_enter(true);
                 }
+                else if (e.getKeyCode() == KeyEvent.VK_S && !gameStarted) {
+                    gameStarted = true;
+                    // initobj();     
+                    // initbombs(); 
+                }
+                
             }
 
             @Override
@@ -234,9 +246,63 @@ public class panel extends JComponent {
             g2.fillRect(0, 0, width, height);
         }
     }
+    private void drawStartScreen() {
+        int boxWidth = 420;
+        int boxHeight = 230;
+        int x = (width - boxWidth) / 2;
+        int y = (height - boxHeight) / 2;
     
-   
-
+        // Background box
+        g2.setColor(new Color(0, 0, 0, 200));
+        g2.fillRoundRect(x, y, boxWidth, boxHeight, 30, 30);
+        g2.setColor(new Color(255, 100, 100));
+        g2.drawRoundRect(x, y, boxWidth, boxHeight, 30, 30);
+    
+        // Title glow
+        g2.setFont(g2.getFont().deriveFont(38f));
+        String title = "SPACE BOMBER";
+        int titleWidth = g2.getFontMetrics().stringWidth(title);
+        int titleX = x + (boxWidth - titleWidth) / 2;
+        int titleY = y + 65;
+    
+        for (int i = 4; i >= 1; i--) {
+            g2.setColor(new Color(255, 50, 50, 25 * i));
+            g2.drawString(title, titleX - i, titleY - i);
+        }
+        g2.setColor(Color.WHITE);
+        g2.drawString(title, titleX, titleY);
+    
+        // Subtitle
+        g2.setFont(g2.getFont().deriveFont(18f));
+        String subtitle = "Dodge & Destroy Meteors";
+        int subtitleWidth = g2.getFontMetrics().stringWidth(subtitle);
+        g2.setColor(new Color(200, 200, 200));
+        g2.drawString(subtitle, x + (boxWidth - subtitleWidth) / 2, y + 100);
+    
+        // Glowing Bomb Icon
+        int bombX = x + boxWidth / 2 - 15;
+        int bombY = y + 120;
+        for (int r = 25; r >= 5; r -= 5) {
+            g2.setColor(new Color(255, 80, 0, 30));
+            g2.fillOval(bombX - r / 2 + 10, bombY - r / 2, r, r);
+        }
+        g2.setColor(Color.RED);
+        g2.fillOval(bombX + 10, bombY, 15, 15);
+    
+        // Start prompt with light glow
+        g2.setFont(g2.getFont().deriveFont(24f));
+        String startMsg = "Press S to Start";
+        int msgWidth = g2.getFontMetrics().stringWidth(startMsg);
+        int msgX = x + (boxWidth - msgWidth) / 2;
+        int msgY = y + 180;
+    
+        g2.setColor(new Color(255, 255, 100, 100));
+        g2.drawString(startMsg, msgX - 1, msgY - 1);
+        g2.setColor(Color.YELLOW);
+        g2.drawString(startMsg, msgX, msgY);
+    }
+    
+    
     private void drawgame(){
       player.draw(g2);
       for(int i=0;i<bombs.size();i++){
