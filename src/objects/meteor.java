@@ -56,9 +56,8 @@ public class meteor {
         g2.drawImage(image,tran,null);
         Shape shape =getshape();
         g2.setTransform(olTransform);
-
-        g2.setColor(Color.RED);
-        g2.draw(shape.getBounds2D());
+        // g2.setColor(Color.RED);
+        // g2.draw(shape.getBounds2D());
     }
     public double getx(){
         return x;

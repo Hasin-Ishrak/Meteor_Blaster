@@ -3,8 +3,8 @@ package objects;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.Path2D;
+// import java.awt.geom.Area;
+// import java.awt.geom.Path2D;
 import javax.swing.ImageIcon;
 
 public class player {
