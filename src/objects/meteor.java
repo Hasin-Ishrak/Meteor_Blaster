@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 public class meteor {
 
     public meteor(){
-        this.image=new ImageIcon(getClass().getResource("/image/rocket.png")).getImage();
+        this.image=new ImageIcon(getClass().getResource("/image/bluemt.png")).getImage();
         Path2D p = new Path2D.Double();
         p.moveTo(0, metesz/ 2);
         p.lineTo(15, 10);
