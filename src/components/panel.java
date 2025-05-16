@@ -24,6 +24,8 @@ import objects.meteor;
 public class panel extends JComponent {
     
     private int score = 0;
+    private boolean gameOver = false;
+
     private Graphics2D g2;
     private BufferedImage image;
 
@@ -60,12 +62,14 @@ public class panel extends JComponent {
              while (start) {
                 long starttime=System.nanoTime();
                 drawbackground();
-                if (!gameStarted) {
-                    drawStartScreen(); // ⬅️ draw "Press S" screen
-                } else {
-                    drawgame(); 
-                    drawScore();// ⬅️ only after S is pressed
-                }
+               if (!gameStarted) {
+                  drawStartScreen();
+               } else if (gameOver) {
+                 drawGameOverScreen();
+               } else {
+                  drawgame(); 
+                 drawScore();
+               }
                 render();
                 long time=System.nanoTime()-starttime;
                 if(time<Time){
@@ -129,8 +133,6 @@ public class panel extends JComponent {
                 }
                 else if (e.getKeyCode() == KeyEvent.VK_S && !gameStarted) {
                     gameStarted = true;
-                    // initobj();     
-                    // initbombs(); 
                 }
                 
             }
@@ -196,6 +198,13 @@ public class panel extends JComponent {
                             if(!meteor.check(width, height)){
                                 meteors.remove(meteor);
                             }
+                            else{
+                                 Area area = new Area(meteor.getshape());
+                                area.intersect(player.getshape());
+                                if (!area.isEmpty()) {
+                               gameOver = true;
+                              }
+                            }
                         }
                     }
                     sleep(5);
@@ -204,7 +213,7 @@ public class panel extends JComponent {
         }).start();
 
     }
-    private void initbombs(){
+     private void initbombs(){
         bombs = new ArrayList<>();
         new Thread(new Runnable() {
            public void run(){
@@ -225,7 +234,6 @@ public class panel extends JComponent {
            } 
         }).start();;
     }
-
     private void checkbombs(bomb bomb){
         for(int i=0;i<meteors.size();i++){
             meteor meteor =meteors.get(i);
@@ -308,6 +316,29 @@ public class panel extends JComponent {
         }
      }
     }
+    private void drawGameOverScreen() {
+    int boxWidth = 400;
+    int boxHeight = 200;
+    int x = (width - boxWidth) / 2;
+    int y = (height - boxHeight) / 2;
+
+    g2.setColor(new Color(0, 0, 0, 200));
+    g2.fillRoundRect(x, y, boxWidth, boxHeight, 30, 30);
+    g2.setColor(Color.RED);
+    g2.drawRoundRect(x, y, boxWidth, boxHeight, 30, 30);
+
+    g2.setFont(g2.getFont().deriveFont(36f));
+    String gameOverText = "Game Over";
+    int textWidth = g2.getFontMetrics().stringWidth(gameOverText);
+    g2.setColor(Color.WHITE);
+    g2.drawString(gameOverText, x + (boxWidth - textWidth) / 2, y + 80);
+
+    g2.setFont(g2.getFont().deriveFont(20f));
+    String scoreText = "Final Score: " + score;
+    int scoreWidth = g2.getFontMetrics().stringWidth(scoreText);
+    g2.drawString(scoreText, x + (boxWidth - scoreWidth) / 2, y + 130);
+}
+
     
     private void drawScore() {
     g2.setFont(g2.getFont().deriveFont(22f));

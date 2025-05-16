@@ -3,9 +3,10 @@ package objects;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
-// import java.awt.geom.Area;
-// import java.awt.geom.Path2D;
 import javax.swing.ImageIcon;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
+import java.awt.geom.AffineTransform;
 
 public class player {
 
@@ -50,6 +51,20 @@ public class player {
 
        g2.setTransform(oldTransform);
     }
+    public Area getshape() {
+   
+    Path2D p = new Path2D.Double();
+    p.moveTo(playersz / 2, 0);
+    p.lineTo(playersz - 5, playersz - 5);
+    p.lineTo(5, playersz - 5);
+    p.closePath();
+
+    AffineTransform afx = new AffineTransform();
+    afx.translate(x, y);
+    afx.rotate(Math.toRadians(angle), playersz / 2, playersz / 2);
+
+    return new Area(afx.createTransformedShape(p));
+}
     public double getx(){
         return x;
     }
