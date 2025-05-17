@@ -2,7 +2,6 @@
 
 ![Java](https://img.shields.io/badge/Made%20With-Java-orange?style=for-the-badge&logo=java)
 ![Swing](https://img.shields.io/badge/GUI-Java%20Swing-blue?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![Game Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=for-the-badge)
 
 ---
