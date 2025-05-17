@@ -22,11 +22,9 @@ Meteor Blaster is a Java-based arcade-style shooting game developed using **Java
 - 🌡️ **Heat Animation**: When the plane moves, it turns yellow due to space heat.
 - 🎆 **Game Over on Collision**: If the plane hits a meteor, the game ends.
 - 🌌 **Animated Space Background**: Features a looping space-themed GIF for an immersive feel.
+![Untitled video - Made with Clipchamp-VEED (1)](https://github.com/user-attachments/assets/638f8807-9b88-4aa6-a808-0ae4aa624302)
 
-  ![game_16_9](https://github.com/user-attachments/assets/56dc186e-fcee-4cb7-8726-0c3a3f485fd6)
-
-
-
+ 
 ---
 
 ## 🎮 Controls
