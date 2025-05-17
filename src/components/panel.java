@@ -10,8 +10,6 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.ImageIcon;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -106,16 +104,8 @@ public class panel extends JComponent {
             rigMeteor.changeangle(180);
             meteors.add(rigMeteor);
         }
-        // meteor meteor =new meteor();
-        // meteor.changelocation(0,lcy);
-        // meteor.changeangle(0);
-        // meteors.add(meteor);
-        // int lcy2=ran.nextInt(height-50)+25;
-        // meteor meteor2=new meteor();
-        // meteor2.changelocation(width, lcy2);
-        // meteor2.changeangle(180);
-        // meteors.add(meteor2);
     }
+    
     private void initobj(){
        player =new player();
        player.changelocation(150, 150);

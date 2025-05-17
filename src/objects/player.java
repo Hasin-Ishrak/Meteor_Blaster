@@ -6,7 +6,6 @@ import java.awt.geom.AffineTransform;
 import javax.swing.ImageIcon;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
-import java.awt.geom.AffineTransform;
 
 public class player {
 
