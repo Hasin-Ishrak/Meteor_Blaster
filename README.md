@@ -7,9 +7,9 @@ Meteor Blaster is a Java-based arcade-style shooting game developed using **Java
 ## 🧑‍💻 About the Author
 
 ## **Hasin Ishrak**
-**Shahjalal University of Science and Technology (SUST)**.
-**Department: Software Engineering**
-**Registration Number: 2022831046**
+#**Shahjalal University of Science and Technology (SUST)**.
+#**Department: Software Engineering**
+#**Registration Number: 2022831046**
 
 ---
 
