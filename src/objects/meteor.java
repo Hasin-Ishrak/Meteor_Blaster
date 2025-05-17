@@ -12,8 +12,8 @@ import javax.swing.ImageIcon;
 
 public class meteor {
 
-    public meteor(){
-        this.image=new ImageIcon(getClass().getResource("/image/bluemt.png")).getImage();
+    public meteor(String imagePath){
+        this.image=new ImageIcon(getClass().getResource(imagePath)).getImage();
         Path2D p = new Path2D.Double();
         p.moveTo(0, metesz/ 2);
         p.lineTo(15, 10);

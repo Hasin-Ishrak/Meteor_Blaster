@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
@@ -89,15 +88,33 @@ public class panel extends JComponent {
     private void addmt(){
         Random ran=new Random();
         int lcy=ran.nextInt(height-50)+25;
-        meteor meteor =new meteor();
-        meteor.changelocation(0,lcy);
-        meteor.changeangle(0);
-        meteors.add(meteor);
-        int lcy2=ran.nextInt(height-50)+25;
-        meteor meteor2=new meteor();
-        meteor2.changelocation(width, lcy2);
-        meteor2.changeangle(180);
-        meteors.add(meteor2);
+        meteor lefMeteor=new meteor("/image/bluemt.png");
+        lefMeteor.changelocation(0, lcy);
+        lefMeteor.changeangle(0);
+        meteors.add(lefMeteor);
+
+        int lcy11=ran.nextInt(height-50)+25;
+        meteor lefMeteor2=new meteor("/image/bluemt.png");
+        lefMeteor2.changelocation(width, lcy11);
+        lefMeteor2.changeangle(180);
+        meteors.add(lefMeteor2);
+
+        if(score >=500){
+            int lcy2=ran.nextInt(height-50)+25;
+            meteor rigMeteor=new meteor("/image/yellowmt.png");
+            rigMeteor.changelocation(width, lcy2);
+            rigMeteor.changeangle(180);
+            meteors.add(rigMeteor);
+        }
+        // meteor meteor =new meteor();
+        // meteor.changelocation(0,lcy);
+        // meteor.changeangle(0);
+        // meteors.add(meteor);
+        // int lcy2=ran.nextInt(height-50)+25;
+        // meteor meteor2=new meteor();
+        // meteor2.changelocation(width, lcy2);
+        // meteor2.changeangle(180);
+        // meteors.add(meteor2);
     }
     private void initobj(){
        player =new player();

@@ -12,7 +12,7 @@ public class player {
 
     public player(){
        this.image=new ImageIcon(getClass().getResource("/image/plane.png")).getImage();
-       this.imagespeed=new ImageIcon(getClass().getResource("/image/plane_speed.png")).getImage();
+       this.imagespeed=new ImageIcon(getClass().getResource("/image/powerplane.png")).getImage();
     }
 
     public static final double playersz=64;
