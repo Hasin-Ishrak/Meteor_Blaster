@@ -52,7 +52,7 @@ public class meteor {
         AffineTransform olTransform=g2.getTransform();
         g2.translate(x, y);
         AffineTransform tran=new AffineTransform();
-        tran.rotate(Math.toRadians(angle+45),metesz/2,metesz/2);
+        tran.rotate(Math.toRadians(angle+255),metesz/2,metesz/2);
         g2.drawImage(image,tran,null);
         Shape shape =getshape();
         g2.setTransform(olTransform);
