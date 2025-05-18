@@ -17,27 +17,29 @@ import java.util.Random;
 import objects.player;
 import objects.bomb;
 import objects.meteor;
+import objects.Sound.sound;
 
 public class panel extends JComponent {
     
     private int score = 0;
     private boolean gameOver = false;
+    private boolean start =true;
+    private boolean gameStarted = false;
+    private boolean spacePlayed = false;
 
     private Graphics2D g2;
     private BufferedImage image;
-
     private int height,width;
     private Thread thread;
-    private boolean start =true;
-    private boolean gameStarted = false;
 
-    private keyboard key;
     private ImageIcon gifImage; 
     private int shotm;
     
     private final int Fps =60;
     private final int Time =1000000000/Fps;
 
+    private sound snd;
+    private keyboard key;
     private player player;
     private List<bomb>bombs;
     private List<meteor>meteors;
@@ -57,15 +59,24 @@ public class panel extends JComponent {
 
            public void run(){
              while (start) {
-                long starttime=System.nanoTime();
-                drawbackground();
+               long starttime=System.nanoTime();
+                  drawbackground(); // draw space 
                if (!gameStarted) {
-                  drawStartScreen();
-               } else if (gameOver) {
-                 drawGameOverScreen();
-               } else {
-                  drawgame(); 
-                 drawScore();
+                  drawStartScreen(); // draw title screen
+               } 
+               else {
+                   if (snd != null && !spacePlayed) {
+                      snd.soundSpace();
+                      spacePlayed = true;
+                      }
+
+                     if (gameOver) {
+                       drawGameOverScreen(); // draw gameover screen
+                     }
+                     else {
+                       drawgame(); // draw meteors, bombs ,plane
+                       drawScore(); //draw current score at top left
+                  }
                }
                 render();
                 long time=System.nanoTime()-starttime;
@@ -82,16 +93,37 @@ public class panel extends JComponent {
         initbombs();
         thread.start();
     }
+    // basically we use thread for improve performance (meteors spawning ,plane movement and bomb)
+    // at a same time
+     private void initobj(){
+
+       snd=new sound();
+       player =new player();
+       player.changelocation(width/2,height/2);
+       meteors=new ArrayList<>();
+       new Thread(new Runnable() {
+         public void run(){
+            while (start) {
+                addmt(); // add meteors
+                if(score>=500){
+                    sleep(1000);
+                }
+                else
+                sleep(3000); // wait 3 sec before spawning more
+            }
+         }
+       }).start();
+    }
 
     private void addmt(){
         Random ran=new Random();
-        int lcy=ran.nextInt(height-50)+25;
+        int lcy=ran.nextInt(height-25);
         meteor lefMeteor=new meteor("/image/bluemt.png");
         lefMeteor.changelocation(0, lcy);
         lefMeteor.changeangle(0);
         meteors.add(lefMeteor);
 
-        int lcy11=ran.nextInt(height-50)+25;
+        int lcy11=ran.nextInt(height-25);
         meteor lefMeteor2=new meteor("/image/bluemt.png");
         lefMeteor2.changelocation(width, lcy11);
         lefMeteor2.changeangle(180);
@@ -106,20 +138,6 @@ public class panel extends JComponent {
         }
     }
     
-    private void initobj(){
-       player =new player();
-       player.changelocation(150, 150);
-       meteors=new ArrayList<>();
-       new Thread(new Runnable() {
-         public void run(){
-            while (start) {
-                addmt();
-                sleep(3000);
-            }
-         }
-       }).start();
-    }
-
     private void initkey(){
         key =new keyboard();
         requestFocus();
@@ -127,15 +145,20 @@ public class panel extends JComponent {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     key.setKey_left(true);
-                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                } 
+                else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     key.setKey_right(true);
-                } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                } 
+                else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     key.setKey_space(true);
-                } else if (e.getKeyCode() == KeyEvent.VK_J) {
+                } 
+                else if (e.getKeyCode() == KeyEvent.VK_J) {
                     key.setKey_j(true);
-                } else if (e.getKeyCode() == KeyEvent.VK_K) {
+                } 
+                else if (e.getKeyCode() == KeyEvent.VK_K) {
                     key.setKey_k(true);
-                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                }
+                 else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     key.setKey_enter(true);
                 }
                 else if (e.getKeyCode() == KeyEvent.VK_S && !gameStarted) {
@@ -148,15 +171,20 @@ public class panel extends JComponent {
             public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     key.setKey_left(false);
-                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                } 
+                else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     key.setKey_right(false);
-                } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                }
+                 else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     key.setKey_space(false);
-                } else if (e.getKeyCode() == KeyEvent.VK_J) {
+                } 
+                else if (e.getKeyCode() == KeyEvent.VK_J) {
                     key.setKey_j(false);
-                } else if (e.getKeyCode() == KeyEvent.VK_K) {
+                } 
+                else if (e.getKeyCode() == KeyEvent.VK_K) {
                     key.setKey_k(false);
-                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                } 
+                else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     key.setKey_enter(false);
                 }
             }
@@ -251,41 +279,37 @@ public class panel extends JComponent {
                 meteors.remove(meteor);
                 bombs.remove(bomb);
                 score+=50;
+                snd.soundShoot();
                }
             }
         }
     }
     private void drawbackground() {
-        if (gifImage != null) {
-            g2.drawImage(gifImage.getImage(), 0, 0, width, height, null); 
-        } else {
-            
-            g2.setColor(new Color(30, 30, 30));
-            g2.fillRect(0, 0, width, height);
+        if (gifImage!=null) {
+            g2.drawImage(gifImage.getImage(), 0, 0,width,height,null); 
+        }
+         else {
+            g2.setColor(new Color(30,30,30));
+            g2.fillRect(0,0,width,height);
         }
     }
     private void drawStartScreen() {
-        int boxWidth = 420;
-        int boxHeight = 230;
-        int x = (width - boxWidth) / 2;
-        int y = (height - boxHeight) / 2;
-    
-        // Background box
+        int boxWidth=420;
+        int boxHeight=230;
+        int x =(width-boxWidth)/2;
+        int y =(height-boxHeight)/2;
         g2.setColor(new Color(0, 0, 0, 200));
-        g2.fillRoundRect(x, y, boxWidth, boxHeight, 30, 30);
+        g2.fillRoundRect(x, y,boxWidth,boxHeight,30,30);
         g2.setColor(new Color(255, 100, 100));
-        g2.drawRoundRect(x, y, boxWidth, boxHeight, 30, 30);
-    
-        // Title glow
+        g2.drawRoundRect(x, y,boxWidth,boxHeight,30,30);
         g2.setFont(g2.getFont().deriveFont(38f));
-        String title = "MeTeOr BlAsTeR";
-        int titleWidth = g2.getFontMetrics().stringWidth(title);
-        int titleX = x + (boxWidth - titleWidth) / 2;
-        int titleY = y + 65;
-    
-        for (int i = 4; i >= 1; i--) {
+        String title="MeTeOr BlAsTeR";
+        int titleWidth=g2.getFontMetrics().stringWidth(title);
+        int titleX =x+(boxWidth-titleWidth)/2;
+        int titleY =y+65;
+        for (int i=4;i>=1;i--) {
             g2.setColor(new Color(255, 50, 50, 25 * i));
-            g2.drawString(title, titleX - i, titleY - i);
+            g2.drawString(title,titleX-i,titleY-i);
         }
         g2.setColor(Color.WHITE);
         g2.drawString(title, titleX, titleY);
