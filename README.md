@@ -21,7 +21,7 @@
 
 ## 🎥 Gameplay Preview
 
-![Gameplay GIF](https://github.com/user-attachments/assets/638f8807-9b88-4aa6-a808-0ae4aa624302)
+![Untitled video - Made with Clipchamp-VEED (1)](https://github.com/user-attachments/assets/a1ce4418-1ae1-4f14-b048-637ee37e7af8)
 
 ---
 
