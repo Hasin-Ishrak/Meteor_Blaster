@@ -3,29 +3,18 @@ package objects;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Path2D;
 import javax.swing.ImageIcon;
 
 public class meteor {
-
     public meteor(String imagePath){
         this.image=new ImageIcon(getClass().getResource(imagePath)).getImage();
-        Path2D p = new Path2D.Double();
-        p.moveTo(0, metesz/ 2);
-        p.lineTo(15, 10);
-        p.lineTo(metesz- 5, 13);
-        p.lineTo(metesz+ 10,metesz/ 2);
-        p.lineTo(metesz- 5,metesz- 13);
-        p.lineTo(15,metesz- 10);
-        mtshape= new Area(p);
+         mtshape=new Area(new java.awt.geom.Ellipse2D.Double(0,0,metesz,metesz));
     }
-
-    public static final double metesz=50;
+    public static final double metesz=70;
     private double x,y;
-    private final float speed=0.3f;
+    private final float speed=0.5f;
     private float angle=0;
     private final Image image;
     private final Area mtshape;
@@ -48,13 +37,10 @@ public class meteor {
         this.angle=angle;
     }
     public void draw(Graphics2D g2){
-        AffineTransform olTransform=g2.getTransform();
-        g2.translate(x, y);
-        AffineTransform tran=new AffineTransform();
-        tran.rotate(Math.toRadians(angle+255),metesz/2,metesz/2);
-        g2.drawImage(image,tran,null);
-        Shape shape =getshape();
-        g2.setTransform(olTransform);
+      AffineTransform oldTransform = g2.getTransform();
+      g2.translate(x, y);
+      g2.drawImage(image, 0, 0, null);
+     g2.setTransform(oldTransform);
     }
     public double getx(){
         return x;
@@ -73,7 +59,7 @@ public class meteor {
     }
     public boolean check(int width,int height){
         Rectangle size=getshape().getBounds();
-        if(x<=-size.getWidth() || y<=-size.getHeight()|| x>width || y>height){
+        if(x<=-size.getWidth()||y<=-size.getHeight()||x>width||y>height){
             return false;
         }
         return true;

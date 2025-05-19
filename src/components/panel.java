@@ -276,10 +276,10 @@ public class panel extends JComponent {
                Area area=new Area(bomb.getshape());
                area.intersect(meteor.getshape());
                if(!area.isEmpty()){
-                meteors.remove(meteor);
-                bombs.remove(bomb);
-                score+=50;
-                snd.soundShoot();
+                meteors.remove(meteor); //if bomb hit the meteor ,then meteor will be removed
+                bombs.remove(bomb);  // if the bomb hit the meteor the bomb will be removed
+                score+=50; // per destroy of meteor increase 50 point
+                snd.soundShoot(); // give a shoot sound of hitting
                }
             }
         }
@@ -307,29 +307,29 @@ public class panel extends JComponent {
         int titleWidth=g2.getFontMetrics().stringWidth(title);
         int titleX =x+(boxWidth-titleWidth)/2;
         int titleY =y+65;
-        for (int i=4;i>=1;i--) {
-            g2.setColor(new Color(255, 50, 50, 25 * i));
+        for (int i=5;i>=1;i--) {
+            g2.setColor(new Color(255,50,50,25*i));
             g2.drawString(title,titleX-i,titleY-i);
         }
         g2.setColor(Color.WHITE);
         g2.drawString(title, titleX, titleY);
 
         g2.setFont(g2.getFont().deriveFont(18f));
-        String subtitle = "Dodge & Destroy Meteors";
-        int subtitleWidth = g2.getFontMetrics().stringWidth(subtitle);
-        g2.setColor(new Color(200, 200, 200));
-        g2.drawString(subtitle, x + (boxWidth - subtitleWidth) / 2, y + 100);
+        String subtitle ="Dodge & Destroy Meteors";
+        int subtitleWidth =g2.getFontMetrics().stringWidth(subtitle);
+        g2.setColor(new Color(200,200,200));
+        g2.drawString(subtitle,x+(boxWidth-subtitleWidth)/2,y+100);
     
         g2.setFont(g2.getFont().deriveFont(24f));
-        String startMsg = "Press S to Start";
-        int msgWidth = g2.getFontMetrics().stringWidth(startMsg);
-        int msgX = x + (boxWidth - msgWidth) / 2;
-        int msgY = y + 180;
+        String startMsg ="Press S to Start";
+        int msgWidth=g2.getFontMetrics().stringWidth(startMsg);
+        int msgX=x+(boxWidth-msgWidth)/2;
+        int msgY=y+180;
     
         g2.setColor(new Color(255, 255, 100, 100));
-        g2.drawString(startMsg, msgX - 1, msgY - 1);
+        g2.drawString(startMsg,msgX-1,msgY-1);
         g2.setColor(Color.YELLOW);
-        g2.drawString(startMsg, msgX, msgY);
+        g2.drawString(startMsg,msgX,msgY);
     }
     
     private void drawgame(){
@@ -348,37 +348,34 @@ public class panel extends JComponent {
      }
     }
     private void drawGameOverScreen() {
-    int boxWidth = 400;
-    int boxHeight = 200;
-    int x = (width - boxWidth) / 2;
-    int y = (height - boxHeight) / 2;
+    int boxWidth=420;
+    int boxHeight=230;
+    int x = (width-boxWidth)/2;
+    int y = (height-boxHeight)/2;
 
-    g2.setColor(new Color(0, 0, 0, 200));
-    g2.fillRoundRect(x, y, boxWidth, boxHeight, 30, 30);
+    g2.setColor(new Color(0,0,0,200));
+    g2.fillRoundRect(x,y,boxWidth,boxHeight,30,30);
     g2.setColor(Color.RED);
-    g2.drawRoundRect(x, y, boxWidth, boxHeight, 30, 30);
+    g2.drawRoundRect(x,y,boxWidth,boxHeight,30,30);
 
     g2.setFont(g2.getFont().deriveFont(36f));
     String gameOverText = "Game Over";
     int textWidth = g2.getFontMetrics().stringWidth(gameOverText);
     g2.setColor(Color.WHITE);
-    g2.drawString(gameOverText, x + (boxWidth - textWidth) / 2, y + 80);
+    g2.drawString(gameOverText,x +(boxWidth-textWidth)/2,y+80);
 
     g2.setFont(g2.getFont().deriveFont(20f));
-    String scoreText = "Final Score: " + score;
-    int scoreWidth = g2.getFontMetrics().stringWidth(scoreText);
-    g2.drawString(scoreText, x + (boxWidth - scoreWidth) / 2, y + 130);
+    String scoreText ="Final Score: "+score;
+    int scoreWidth =g2.getFontMetrics().stringWidth(scoreText);
+    g2.drawString(scoreText,x+(boxWidth-scoreWidth) /2,y+130);
 }
 
-    
     private void drawScore() {
-    g2.setFont(g2.getFont().deriveFont(22f));
+    g2.setFont(g2.getFont().deriveFont(25f));
     g2.setColor(Color.yellow);
-    g2.drawString("Score: " + score, 20, 30);
+    g2.drawString("Score: "+score,20,30);
 }
-
     private void render(){
-       
         Graphics g =getGraphics();
         g.drawImage(image,0, 0, null);
         g.dispose();
@@ -391,5 +388,4 @@ public class panel extends JComponent {
           System.err.println(ex);
        }
  }
-    
 }

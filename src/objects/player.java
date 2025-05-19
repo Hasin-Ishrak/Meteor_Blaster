@@ -8,13 +8,11 @@ import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 
 public class player {
-
     public player(){
        this.image=new ImageIcon(getClass().getResource("/image/plane.png")).getImage();
        this.imagespeed=new ImageIcon(getClass().getResource("/image/powerplane.png")).getImage();
     }
-
-    public static final double playersz=64;
+    public static final double playersz=65;
     private double x;
     private double y;
     private final float mxsp= 1f;
@@ -45,25 +43,21 @@ public class player {
        AffineTransform oldTransform=g2.getTransform();
        g2.translate(x, y);
        AffineTransform tr=new AffineTransform();
-       tr.rotate(Math.toRadians(angle+45),playersz/2,playersz/2);
+       tr.rotate(Math.toRadians(angle+45),playersz/2,playersz/2);//for align the image 
        g2.drawImage(speedup ? imagespeed:image,tr,null);
-
        g2.setTransform(oldTransform);
     }
     public Area getshape() {
-   
-    Path2D p = new Path2D.Double();
-    p.moveTo(playersz / 2, 0);
-    p.lineTo(playersz - 5, playersz - 5);
+    Path2D p=new Path2D.Double();
+    p.moveTo(playersz/2,0);
+    p.lineTo(playersz - 5,playersz-5);
     p.lineTo(5, playersz - 5);
     p.closePath();
-
     AffineTransform afx = new AffineTransform();
     afx.translate(x, y);
-    afx.rotate(Math.toRadians(angle), playersz / 2, playersz / 2);
-
+    afx.rotate(Math.toRadians(angle), playersz/2,playersz/2);
     return new Area(afx.createTransformedShape(p));
-}
+    }
     public double getx(){
         return x;
     }
@@ -88,7 +82,7 @@ public class player {
         speed=0;
       }
       else{
-        speed-=0.003f;
+        speed-=0.003f; // for decrease the speed gently
       }
     }
 }

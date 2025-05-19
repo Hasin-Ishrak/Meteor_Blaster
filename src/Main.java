@@ -5,14 +5,12 @@ import java.awt.event.WindowEvent;
 
 import components.panel;
 
-
 public class Main extends JFrame {
 
     public Main(){
         init();
     }
     private void init(){
-        
         setTitle("Meteor_Blaster");
         setSize(1000,720);
         setLocationRelativeTo(null);
@@ -30,9 +28,7 @@ public class Main extends JFrame {
 
     }
    public static void main(String[] args) {
-
        Main main =new Main();
        main.setVisible(true);
-
    }
 }

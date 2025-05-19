@@ -8,17 +8,16 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
 public class bomb {
-
     private double x;
     private double y;
     private final Shape shape;
-    private final Color color = new Color(0, 255, 255);
+    private final Color color=new Color(0, 255, 255);
     private final float angle;
     private double size;
-    private float speed = 1f;
+    private float speed=1f;
 
     public bomb(double x,double y,float angle,double size,float speed){
-       x+=player.playersz/2 -(size/2);
+       x+=player.playersz/2-(size/2);
        y+=player.playersz/2-(size/2);
        this.x=x;
        this.y=y;
@@ -33,7 +32,7 @@ public class bomb {
     }
     public boolean check(int w, int h){
         if(x<=size || y<=size || x>w || y>h){
-            return false;
+            return false; // if the bomb goes out of the screen
         }
         return true;
     }
